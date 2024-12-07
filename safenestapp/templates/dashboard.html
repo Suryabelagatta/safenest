@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeNest - Dashboard</title>
+    {% load static %} <!-- Add this line to load the static template tag -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Header/Navigation Bar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">SafeNest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about-us">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#report-missing">Report Missing Child</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#report-found">Report Found Child</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact-us">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: url('{% static "images/hero-bg.jpg" %}');">
+        <div class="container text-center text-white">
+            <h1>Help Us Reunite Families</h1>
+            <p>Report missing or found children below.</p>
+            <a href="#report-missing" class="btn btn-primary">Report Missing Child</a>
+            <a href="#report-found" class="btn btn-secondary">Report Found Child</a>
+        </div>
+    </section>
+
+    <!-- Information Section -->
+    <section id="about-us" class="py-5 bg-light">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>SafeNest is dedicated to reuniting missing children with their families. Our mission is to create a safer community through collaboration and technology.</p>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <h3>Children Found</h3>
+                    <p>{{ children_found }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Cases Solved</h3>
+                    <p>{{ cases_solved }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Active Reports</h3>
+                    <p>{{ active_reports }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms Section -->
+    <section id="report-missing" class="py-5">
+        <div class="container">
+            <h2>Report Missing Child</h2>
+            <a href="{% if user.is_authenticated %}{% url 'report_missing' %}{% else %}{% url 'login' %}{% endif %}" class="btn btn-primary">
+                Submit Missing Child Report
+            </a>            
+        </div>
+    </section>
+    <section id="report-found" class="py-5 bg-light">
+        <div class="container">
+            <h2>Report Found Child</h2>
+            <a href="{% url 'report_found' %}" class="btn btn-secondary">Submit Found Child Report</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white text-center">
+        <p>&copy; 2024 SafeNest. All Rights Reserved.</p>
+        <p>Contact us: info@safenest.com | +91 9900329154</p>
+    </footer>
+</body>
+</html>

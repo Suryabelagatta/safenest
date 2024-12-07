@@ -1,0 +1,35 @@
+{% load static %} <!-- Add this line to load the static template tag -->
+
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="name">Child's Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required>
+    
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+    </select>
+    
+    <label for="last_seen_location">Last Seen Location:</label>
+    <input type="text" id="last_seen_location" name="last_seen_location" required>
+    
+    <label for="last_seen_date">Last Seen Date:</label>
+    <input type="date" id="last_seen_date" name="last_seen_date" required>
+    
+    <label for="contact_details">Contact Details:</label>
+    <textarea id="contact_details" name="contact_details" rows="4" required></textarea>
+    
+    <label for="photo">Upload Photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+    
+    <label for="additional_info">Additional Information (Optional):</label>
+    <textarea id="additional_info" name="additional_info" rows="3"></textarea>
+    
+    <button type="submit">Submit Report</button>
+</form>

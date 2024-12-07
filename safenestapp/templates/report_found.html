@@ -1,0 +1,28 @@
+{% load static %} <!-- Add this line to load the static template tag -->
+
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="reporter_name">Your Name:</label>
+    <input type="text" id="reporter_name" name="reporter_name" required>
+    
+    <label for="description">Description of the Child:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+    
+    <label for="found_location">Found Location:</label>
+    <input type="text" id="found_location" name="found_location" required>
+    
+    <label for="found_date">Found Date:</label>
+    <input type="date" id="found_date" name="found_date" required>
+    
+    <label for="contact_details">Your Contact Details:</label>
+    <textarea id="contact_details" name="contact_details" rows="4" required></textarea>
+    
+    <label for="photo">Upload Photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+
+    <label for="video">Upload Video:</label>
+    <input type="file" id="video" name="video" accept="video/*">
+    
+    <button type="submit">Submit Report</button>
+</form>
