@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "safenestapp",
 ]
 
 MIDDLEWARE = [
@@ -105,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
@@ -115,7 +116,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'safenestapp/static']
+
+MEDIA_URL = '/media/'  # URL to access uploaded media
+MEDIA_ROOT = BASE_DIR / 'media'  # Folder to store media files
+
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+LOGIN_REDIRECT_URL = '/parent_dashboard/'  # Redirect after login
+LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
