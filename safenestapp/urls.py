@@ -11,4 +11,7 @@ urlpatterns = [
     path('report-found/',views.report_found,name='report_found'),
     path('register/', views.register, name='register'),
     path('upload_found/', views.upload_found_child, name='upload_found_child'),
+    path('report/<int:report_id>/', views.view_report, name='view_report'),
+    path('report/<int:report_id>/edit/', views.edit_report, name='edit_report'),
+    path('report/<int:report_id>/delete/', views.delete_report, name='delete_report'),
 ]

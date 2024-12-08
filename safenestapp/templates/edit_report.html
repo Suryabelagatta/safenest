@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Edit Report{% endblock %}
+{% block content %}
+<div class="edit-report-form">
+    <h2>Edit Report for {{ child.name }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

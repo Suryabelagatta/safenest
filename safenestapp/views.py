@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -11,7 +11,48 @@ from django.core.files.storage import FileSystemStorage
 from .utils import match_missing_child_background, match_found_child
 import os
 from django.http import JsonResponse
+import threading
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .forms import MissingChildForm
+from django.conf import settings
 
+@login_required
+def delete_report(request, report_id):
+    child = get_object_or_404(MissingChild, id=report_id, parent=request.user)
+    if request.method == 'POST':
+        child.delete()
+        return HttpResponseRedirect(reverse('parent_dashboard'))
+    return render(request, 'confirm_delete.html', {'child': child})
+
+@login_required
+def edit_report(request, report_id):
+    child = get_object_or_404(MissingChild, id=report_id, parent=request.user)
+    if request.method == 'POST':
+        form = MissingChildForm(request.POST, request.FILES, instance=child)
+        if form.is_valid():
+            form.save()
+            # Optional: Send email notification if status is updated
+            if 'status' in form.changed_data:
+                child.send_status_update_email()
+            return HttpResponseRedirect(reverse('parent_dashboard'))
+    else:
+        form = MissingChildForm(instance=child)
+    return render(request, 'edit_report.html', {'form': form, 'child': child})
+
+@login_required
+def view_report(request, report_id):
+    child = get_object_or_404(MissingChild, id=report_id, parent=request.user)
+    matched_videos = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_videos]
+    matched_frames = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_frames]
+    matched_photos = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_photos]
+
+    return render(request, 'view_report.html', {
+        'child': child,
+        'matched_videos': matched_videos,
+        'matched_frames': matched_frames,
+        'matched_photos': matched_photos,
+    })
 
 # View for uploading found child photo/video
 def upload_found_child(request):
@@ -59,35 +100,26 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return '/parent_dashboard/' 
 
+from .tasks import match_missing_child_task
+
 @login_required
 def report_missing(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        age = request.POST['age']
-        gender = request.POST['gender']
-        last_seen_location = request.POST['last_seen_location']
-        last_seen_date = request.POST['last_seen_date']
-        contact_details = request.POST['contact_details']
-        photo = request.FILES['photo']
-
-        # Create the missing child report
+        # Collect data and create the missing child report
         missing_child = MissingChild.objects.create(
             parent=request.user,
-            name=name,
-            age=age,
-            gender=gender,
-            last_seen_location=last_seen_location,
-            last_seen_date=last_seen_date,
-            contact_details=contact_details,
-            photo=photo,
+            name=request.POST['name'],
+            age=request.POST['age'],
+            gender=request.POST['gender'],
+            last_seen_location=request.POST['last_seen_location'],
+            last_seen_date=request.POST['last_seen_date'],
+            contact_details=request.POST['contact_details'],
+            photo=request.FILES['photo'],
         )
-        
-        # Start the matching process in the background
-        # You can run this in the background using Celery or threading
-        match_missing_child_background(missing_child)
+        # Trigger background processing via Celery
+        #match_missing_child_task.delay(missing_child.id)
 
-        # Notify the user that the report has been submitted
-        messages.success(request, "Missing child report submitted successfully. We are looking for matches.")
+        messages.success(request, "Report submitted! We are working on it.")
         return redirect('parent_dashboard')
 
     return render(request, 'report_missing.html')
@@ -95,7 +127,7 @@ def report_missing(request):
 @login_required
 def parent_dashboard(request):
     missing_children = MissingChild.objects.filter(parent=request.user).order_by('-date_reported')
-    print(missing_children)
+    #print(missing_children)
     return render(request, 'parent_dashboard.html', {'missing_children': missing_children})
 
 
@@ -136,9 +168,6 @@ def register(request):
             return redirect('parent_dashboard')
     return render(request, 'register.html')
 
-@login_required
-def parent_dashboard(request):
-    return render(request, 'parent_dashboard.html')
 
 from .models import MissingChild, FoundChild, Statistics
 

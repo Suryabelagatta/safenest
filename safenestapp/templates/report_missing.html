@@ -32,4 +32,9 @@
     <textarea id="additional_info" name="additional_info" rows="3"></textarea>
     
     <button type="submit">Submit Report</button>
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            alert("Report submitted! Redirecting to the dashboard...");
+        });
+    </script>
 </form>

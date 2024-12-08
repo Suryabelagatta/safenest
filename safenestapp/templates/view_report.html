@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}View Report{% endblock %}
+{% block content %}
+<div class="report-details">
+    <h2>Details for {{ child.name }}</h2>
+    <p><strong>Age:</strong> {{ child.age }}</p>
+    <p><strong>Last Seen:</strong> {{ child.last_seen_date }} at {{ child.last_seen_location }}</p>
+    <p><strong>Status:</strong> {{ child.status }}</p>
+    <p><strong>Description:</strong> {{ child.description }}</p>
+    {% if child.photo %}
+    <img src="{{ child.photo.url }}" alt="Child Photo" style="width: 200px; height: auto;">
+    {% endif %}
+    <a href="{% url 'edit_report' child.id %}">Edit</a>
+    <a href="{% url 'parent_dashboard' %}">Back to Dashboard</a>
+</div>
+
+<h3>Matched Data</h3>
+{% if child.status == "Found" %}
+    <h4>Matched Photos:</h4>
+    {% for photo in matched_photos %}
+    <img src="{{ photo }}" alt="Matched Photo">
+    {% endfor %}
+
+    <h4>Matched Videos:</h4>
+    {% for video in matched_videos %}
+    <video controls>
+        <source src="{{ video }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    {% endfor %}
+
+    <h4>Matched Frames:</h4>
+    {% for frame in matched_frames %}
+    <img src="{{ frame }}" alt="Matched Frame">
+    {% endfor %}
+{% else %}
+    <p>No matches found yet.</p>
+{% endif %}
+
+{% endblock %}

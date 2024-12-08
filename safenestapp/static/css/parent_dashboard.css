@@ -1,55 +1,85 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f7fa;
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: #2575fc;
-    color: white;
-    padding: 1rem 0;
-    text-align: center;
+    padding: 15px 20px;
+    color: #ffffff;
+    border-radius: 8px;
 }
 
-h2 {
-    margin-top: 2rem;
-    text-align: center;
-    font-size: 2rem;
-    color: #333;
-}
-
-p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 2rem;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-a {
-    display: inline-block;
-    margin: 1rem;
-    padding: 12px 20px;
-    color: white;
-    background: #2575fc;
+nav a {
+    color: #ffffff;
+    margin: 0 10px;
     text-decoration: none;
+}
+
+.submenu {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.tab-button {
+    background: #f5f5f5;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 10px;
     border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background 0.3s;
 }
 
-a:hover {
-    background: #6a11cb;
+.tab-button:hover {
+    background: #e0e0e0;
 }
 
-.logout {
-    background: #ff4d4d;
+.tab-content {
+    display: none;
 }
 
-.logout:hover {
-    background: #ff3333;
+.tab-content:not(.hidden) {
+    display: block;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.stats-container, .progress-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.stat, .progress-item {
+    text-align: center;
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    width: 30%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
 }

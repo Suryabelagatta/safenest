@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Parent Dashboard</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/parent_dashboard.css' %}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Parent Dashboard{% endblock %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/parent_dashboard.css' %}">
+
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header Section -->
     <header>
         <h1>Parent Dashboard</h1>
         <nav>
@@ -13,8 +17,42 @@
             <a href="{% url 'logout' %}">Logout</a>
         </nav>
     </header>
-    <main>
+
+    <!-- Welcome Message -->
+    <section class="welcome-section">
         <h2>Welcome, {{ user.username }}</h2>
+        <p>Your one-stop platform for managing and tracking missing child reports.</p>
+    </section>
+
+    <!-- Submenu for Navigation -->
+    <div class="submenu">
+        <button class="tab-button" onclick="showTab('quick-stats')">Quick Stats</button>
+        <button class="tab-button" onclick="showTab('report-management')">Reports</button>
+        <button class="tab-button" onclick="showTab('progress-tracking')">Progress Tracking</button>
+        <button class="tab-button" onclick="showTab('match-verification')">Match Verification</button>
+    </div>
+
+    <!-- Quick Stats Section -->
+    <section id="quick-stats" class="tab-content">
+        <h3>Quick Stats</h3>
+        <div class="stats-container">
+            <div class="stat">
+                <h4>Total Reports</h4>
+                <p>{{ total_reports }}</p>
+            </div>
+            <div class="stat">
+                <h4>Found Reports</h4>
+                <p>{{ matched_reports }}</p>
+            </div>
+            <div class="stat">
+                <h4>Ongoing Searches</h4>
+                <p>{{ ongoing_searches }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Report Management Section -->
+    <section id="report-management" class="tab-content hidden">
         <h3>Your Missing Child Reports</h3>
         <table>
             <thead>
@@ -23,6 +61,7 @@
                     <th>Age</th>
                     <th>Last Seen</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,14 +71,71 @@
                     <td>{{ child.age }}</td>
                     <td>{{ child.last_seen_date }}</td>
                     <td>{{ child.status }}</td>
+                    <td>
+                        <a href="{% url 'view_report' child.id %}">View</a>
+                        <a href="{% url 'edit_report' child.id %}">Edit</a>
+                        <a href="{% url 'delete_report' child.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4">No missing children reports found.</td>
+                    <td colspan="5">No missing children reports found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </main>
-</body>
-</html>
+    </section>
+
+    <!-- Progress Tracking Section -->
+    <section id="progress-tracking" class="tab-content hidden">
+        <h3>Progress Tracking</h3>
+        <div class="progress-container">
+            <div class="progress-item">
+                <h4>Match Progress</h4>
+                <p>Photos Processed: {{ photos_processed }}</p>
+                <p>Videos Processed: {{ videos_processed }}</p>
+                <p>Reports Generated: {{ reports_generated }}</p>
+            </div>
+            <div class="progress-history">
+                <h4>Match History</h4>
+                <ul>
+                    {% for match in match_history %}
+                    <li>
+                        <strong>Date:</strong> {{ match.date }} - 
+                        <strong>Details:</strong> {{ match.details }}
+                    </li>
+                    {% empty %}
+                    <li>No matches found yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Match Verification Section -->
+    <section id="match-verification" class="tab-content hidden">
+        <h3>Match Verification</h3>
+        <p>Below are potential matches for your reports. Please confirm or reject them:</p>
+        <div class="match-list">
+            {% for match in potential_matches %}
+            <div class="match-item">
+                <img src="{{ match.photo.url }}" alt="Potential Match">
+                <p><strong>Name:</strong> {{ match.name }}</p>
+                <p><strong>Details:</strong> {{ match.details }}</p>
+                <button onclick="confirmMatch({{ match.id }})">Confirm</button>
+                <button onclick="rejectMatch({{ match.id }})">Reject</button>
+            </div>
+            {% empty %}
+            <p>No potential matches at this time.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+        document.getElementById(tabId).classList.remove('hidden');
+    }
+</script>
+{% endblock %}

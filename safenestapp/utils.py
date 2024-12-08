@@ -5,42 +5,28 @@ import cv2
 from django.conf import settings
 from .models import MissingChild, FoundChild
 import threading
+import os
+# from some_image_matching_library import match_images  # Replace with your actual library
+
+# def match_found(file1, file2):
+#     """
+#     Determine if two files (e.g., video frame or photo) match.
+    
+#     :param file1: Path to the first file (video or photo)
+#     :param file2: Path to the second file (photo)
+#     :return: Boolean indicating whether a match is found
+#     """
+#     # Example: Check if the file types are compatible
+#     if os.path.splitext(file1)[1].lower() in ['.jpg', '.png'] and os.path.splitext(file2)[1].lower() in ['.jpg', '.png']:
+#         return match_images(file1, file2)  # Replace with your image matching logic
+#     return False
+
+
 
 # Function to run in background
 def match_missing_child_background(missing_child):
+    print("background fun called")
     match_missing_child_photo(missing_child)
-
-# Update the report_missing view to start the process in a background thread
-def report_missing(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        age = request.POST['age']
-        gender = request.POST['gender']
-        last_seen_location = request.POST['last_seen_location']
-        last_seen_date = request.POST['last_seen_date']
-        contact_details = request.POST['contact_details']
-        photo = request.FILES['photo']
-
-        # Create the missing child report
-        missing_child = MissingChild.objects.create(
-            parent=request.user,
-            name=name,
-            age=age,
-            gender=gender,
-            last_seen_location=last_seen_location,
-            last_seen_date=last_seen_date,
-            contact_details=contact_details,
-            photo=photo,
-        )
-        
-        # Run the photo matching in the background
-        threading.Thread(target=match_missing_child_background, args=(missing_child,)).start()
-
-        # Notify the user
-        messages.success(request, "Missing child report submitted successfully. We are looking for matches.")
-        return redirect('parent_dashboard')
-
-    return render(request, 'report_missing.html')
 
 # Utility function to load face encodings from images
 def load_encodings_from_folder(folder_path):

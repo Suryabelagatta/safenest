@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 class MissingChild(models.Model):
     STATUS_CHOICES = [
-        ('Missing', 'Missing'),
-        ('Matched', 'Matched'),
+        ('Under Review', 'Under Review'),
+        ('Found', 'Found'),  # Renamed from 'Matched' to 'Found'
+        ('Closed', 'Closed'),
     ]
     
     parent = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to the parent who submitted the report
@@ -17,8 +19,22 @@ class MissingChild(models.Model):
     photo = models.ImageField(upload_to='missing_children_photos/')
     additional_info = models.TextField(blank=True, null=True)
     date_reported = models.DateTimeField(auto_now_add=True)
+    matched_videos = models.JSONField(default=list, blank=True)  # Store paths to matched videos
+    matched_frames = models.JSONField(default=list, blank=True)  # Store paths to matched frames
+    matched_photos = models.JSONField(default=list, blank=True)  # Store paths to matched photos
     
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Missing')  # Add status field here
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='Missing')  # Add status field here
+
+    def send_status_update_email(self):
+        """Send an email notification when the status of the report changes."""
+        subject = f"Update on Missing Child Report: {self.name}"
+        message = (
+            f"Hello {self.parent.username},\n\n"
+            f"The status of your missing child report for {self.name} has been updated to: {self.status}.\n"
+            f"Please log in to your dashboard to view more details.\n\n"
+            f"Thank you,\nSafeNest Team"
+        )
+        send_mail(subject, message, 'no-reply@safenest.com', [self.parent.email])
 
     def __str__(self):
         return f"{self.name} - {self.status} - Reported by {self.parent.username}"

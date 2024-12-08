@@ -1,4 +1,62 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SafeNest{% endblock %}
+{% load static %} 
+{% block extra_css %}
+{% static 'css/dashboard.css' %}
+{% endblock %}
+
+{% block content %}
+<section class="hero" style="background-image: url('{% static "images/hero-bg.jpg" %}');">
+    <div class="container text-center text-white">
+        <h1>Help Us Reunite Families</h1>
+        <p>Report missing or found children below.</p>
+        <a href="{% url 'report_missing' %}" class="btn btn-primary">Report Missing Child</a>
+        <a href="{% url 'report_found' %}" class="btn btn-secondary">Report Found Child</a>
+    </div>
+</section>
+
+<section id="about-us" class="py-5 bg-light">
+    <div class="container">
+        <h2>About Us</h2>
+        <p>SafeNest is dedicated to reuniting missing children with their families. Our mission is to create a safer community through collaboration and technology.</p>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <h3>Children Found</h3>
+                <p>{{ children_found }}</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Cases Solved</h3>
+                <p>{{ cases_solved }}</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Active Reports</h3>
+                <p>{{ active_reports }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="report-missing" class="py-5">
+    <div class="container">
+        <h2>Report Missing Child</h2>
+        <a href="{% if user.is_authenticated %}{% url 'report_missing' %}{% else %}{% url 'login' %}{% endif %}" class="btn btn-primary">
+            Submit Missing Child Report
+        </a>
+    </div>
+</section>
+
+<section id="report-found" class="py-5 bg-light">
+    <div class="container">
+        <h2>Report Found Child</h2>
+        <a href="{% url 'report_found' %}" class="btn btn-secondary">Submit Found Child Report</a>
+    </div>
+</section>
+{% endblock %}
+
+
+
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -83,3 +141,6 @@
     </footer>
 </body>
 </html>
+ {% endcomment %}
+
+
