@@ -15,3 +15,4 @@ urlpatterns = [
     path('report/<int:report_id>/edit/', views.edit_report, name='edit_report'),
     path('report/<int:report_id>/delete/', views.delete_report, name='delete_report'),
 ]
+ 
