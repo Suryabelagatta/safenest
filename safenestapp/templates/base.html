@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SafeNest{% endblock %}</title>
     {% load static %}
+    {% load static %}
+    <!-- Global/Common CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% block extra_css %}{% endblock %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <!-- Page-Specific CSS -->
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <!-- Header -->
@@ -18,7 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about-us">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#report-missing">Report Missing Child</a></li>
                     <li class="nav-item"><a class="nav-link" href="#report-found">Report Found Child</a></li>

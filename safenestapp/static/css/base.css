@@ -1,0 +1,59 @@
+/* Base Styles for SafeNest */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+header.navbar {
+    background-color: #343a40; /* Dark background */
+    padding: 10px 20px;
+}
+
+header .navbar-brand {
+    font-size: 1.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+header .navbar-brand:hover {
+    color: #ffc107; /* Hover color */
+}
+
+header .nav-link {
+    color: #ddd;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+header .nav-link:hover {
+    color: #ffc107;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer a {
+    color: #ffc107;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-
 {% block title %}Parent Dashboard{% endblock %}
 
 {% load static %}
 
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/parent_dashboard.css' %}">
+{% endblock %}
 
 
 {% block content %}
 <div class="dashboard-container">
-    <!-- Header Section -->
     <header>
         <h1>Parent Dashboard</h1>
         <nav>

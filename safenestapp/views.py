@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .utils import match_missing_child_background, match_found_child
+# from .utils import match_found_child
 import os
 from django.http import JsonResponse
 import threading
@@ -65,7 +65,7 @@ def upload_found_child(request):
         found_child = FoundChild.objects.create(name=request.POST.get('name'), photo=uploaded_file)
 
         # Match the found child
-        match_found_child(found_child)
+        #match_found_child(found_child)
 
         return render(request, 'upload.html', {
             'uploaded_file_url': file_url,
@@ -80,7 +80,7 @@ def upload_found_child(request):
         found_child = FoundChild.objects.create(name=request.POST.get('name'), video=uploaded_video)
 
         # Match the found child
-        match_found_child(found_child)
+        #match_found_child(found_child)
 
         return render(request, 'upload.html', {
             'uploaded_file_url': file_url,
