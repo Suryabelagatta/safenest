@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 class MissingChild(models.Model):
     STATUS_CHOICES = [
         ('Under Review', 'Under Review'),
-        ('Found', 'Found'),  # Renamed from 'Matched' to 'Found'
+        ('Found', 'Found'),  
         ('Closed', 'Closed'),
     ]
     

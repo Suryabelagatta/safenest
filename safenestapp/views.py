@@ -8,7 +8,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-# from .utils import match_found_child
 import os
 from django.http import JsonResponse
 import threading
@@ -43,9 +42,9 @@ def edit_report(request, report_id):
 @login_required
 def view_report(request, report_id):
     child = get_object_or_404(MissingChild, id=report_id, parent=request.user)
-    matched_videos = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_videos]
-    matched_frames = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_frames]
-    matched_photos = [os.path.join(settings.MEDIA_URL, path) for path in child.matched_photos]
+    matched_videos = [os.path.join(settings.MEDIA_URL,'found_children_videos/',path) for path in child.matched_videos]
+    matched_frames = [os.path.join(settings.MEDIA_URL,'matched_frames/',path) for path in child.matched_frames]
+    matched_photos = [os.path.join(settings.MEDIA_URL,'found_children_photos/',path) for path in child.matched_photos]
 
     return render(request, 'view_report.html', {
         'child': child,
@@ -184,3 +183,5 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 
+https://forms.office.com/r/t2tB0YdQbu
+https://forms.office.com/r/t2tB0YdQbu

@@ -21,7 +21,20 @@
 
 <h3>Matched Data</h3>
 {% if child.status == "Found" %}
-    <h4>Matched Photos:</h4>
+
+<h4>Matched Photos:</h4>
+{% for photo in matched_photos %}
+    <img src="{{ photo }}" alt="Matched Photo" style="width: 150px; height: auto; margin: 10px; border: 1px solid #ccc;">
+{% endfor %}
+
+<h4>Matched Videos:</h4>
+{% for video in matched_videos %}
+    <video controls style="width: 300px; height: auto; margin: 10px; border: 1px solid #ccc;">
+        <source src="{{ video }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+{% endfor %}
+    {% comment %} <h4>Matched Photos:</h4>
     {% for photo in matched_photos %}
     <img src="{{ photo }}" alt="Matched Photo">
     {% endfor %}
@@ -32,12 +45,12 @@
         <source src="{{ video }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
 
-    <h4>Matched Frames:</h4>
+{% comment %} <h4>Matched Frames:</h4>
     {% for frame in matched_frames %}
     <img src="{{ frame }}" alt="Matched Frame">
-    {% endfor %}
+    {% endfor %} {% endcomment %}
 {% else %}
     <p>No matches found yet.</p>
 {% endif %}
