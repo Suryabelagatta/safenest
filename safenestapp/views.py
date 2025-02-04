@@ -181,7 +181,3 @@ def dashboard(request):
         'active_reports': active_reports_count,
     }
     return render(request, 'dashboard.html', context)
-
-
-https://forms.office.com/r/t2tB0YdQbu
-https://forms.office.com/r/t2tB0YdQbu
